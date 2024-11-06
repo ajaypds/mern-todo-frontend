@@ -1,8 +1,11 @@
 import React from 'react'
+import MainLayout from './layout/MainLayout'
 
 const App = () => {
   return (
-    <div className='bg-slate-200 m-5 p-5'>App</div>
+    <div className='h-full w-full bg-slate-300'>
+      <MainLayout />
+    </div>
   )
 }
 
