@@ -1,14 +1,15 @@
 import React from 'react'
 import Header from '../components/Header'
-import ContentLayout from './ContentLayout'
+import SecondaryLayout from './SecondaryLayout'
 
-const MainLayout = () => {
+const Layout = () => {
+
     return (
         <div className='flex flex-col h-full pl-5 pr-5'>
             <Header />
-            <ContentLayout />
+            <SecondaryLayout />
         </div>
     )
 }
 
-export default MainLayout
+export default Layout

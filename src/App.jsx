@@ -1,10 +1,11 @@
 import React from 'react'
-import MainLayout from './layout/MainLayout'
+import { RouterProvider } from 'react-router-dom'
+import router from './routes/Routes'
 
 const App = () => {
   return (
     <div className='h-full w-full bg-slate-300'>
-      <MainLayout />
+      <RouterProvider router={router} future={{ v7_startTransition: true }} />
     </div>
   )
 }
