@@ -5,8 +5,8 @@ import SecondaryLayout from './SecondaryLayout'
 const Layout = () => {
 
     return (
-        <div className='flex flex-col h-full pl-5 pr-5'>
-            <Header />
+        <div className='flex flex-col h-full'>
+            {/* <Header /> */}
             <SecondaryLayout />
         </div>
     )

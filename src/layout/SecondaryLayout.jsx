@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
+import { MenuOutlined } from '@mui/icons-material'
+import { toggleSidebar } from '../store'
+import { IconButton } from '@mui/material'
 
 const SecondaryLayout = () => {
 
     const sidebar = useSelector((x) => x.app.sidebar)
     const [borderDelay, setBorderDelay] = useState(true)
+
+    const dispatch = useDispatch()
+
+    const handleMenuClick = () => {
+        dispatch(toggleSidebar())
+    }
 
     useEffect(() => {
         if (!sidebar) {
@@ -19,11 +28,12 @@ const SecondaryLayout = () => {
     }, [sidebar])
 
     return (
-        <div className='flex h-full w-full bg-slate-300'>
-            <div className={`transition-all duration-500 overflow-hidden ${borderDelay ? 'border-none' : 'border-r'} ${!sidebar ? 'w-0' : 'w-0 tablet:w-32'} `}>
+        <div className='flex h-full w-full bg-white'>
+            <div className={`transition-all duration-500 bg-orange-50/50 overflow-hidden ${borderDelay ? 'border-none' : 'border-none'} ${!sidebar ? 'w-0' : 'w-0 tablet:w-60 tablet:pl-5'} `}>
                 <Sidebar />
             </div>
-            <div className='transition-all duration-500 pl-2'>
+            <div className='transition-all duration-500 pl-2 flex-col'>
+                <div className='h-10 flex items-center'>{!sidebar && <IconButton onClick={handleMenuClick}><MenuOutlined /></IconButton>} Page Title</div>
                 <Outlet />
             </div>
         </div>

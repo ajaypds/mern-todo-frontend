@@ -4,7 +4,7 @@ import router from './routes/Routes'
 
 const App = () => {
   return (
-    <div className='h-full w-full bg-slate-300'>
+    <div className='h-full w-full bg-slate-300 text-sm'>
       <RouterProvider router={router} future={{ v7_startTransition: true }} />
     </div>
   )
