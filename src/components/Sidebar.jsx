@@ -1,74 +1,105 @@
-import { AddCircle, Filter, GridViewOutlined, HorizontalSplit, Inbox, KeyboardArrowDown, KeyboardArrowRight, MenuOutlined, Search, Tag, Today, Upcoming } from '@mui/icons-material'
+import { AddCircle } from '@mui/icons-material'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { toggleSidebar } from '../store'
 import { IconButton } from '@mui/material'
+import { HiChevronRight } from "react-icons/hi2";
+import { PiHashThin } from "react-icons/pi";
+import { BsLayoutSidebar } from "react-icons/bs";
+import { IoFileTray, IoFileTrayOutline, IoSearchOutline, IoGrid, IoGridOutline, IoAdd, IoToday, IoTodayOutline, IoCalendarOutline, IoCalendarSharp } from "react-icons/io5";
+
 
 const Sidebar = () => {
 
     const [accord, setAccord] = useState(false)
-
+    const [hovr, setHovr] = useState(false)
     const dispatch = useDispatch()
+
+
+    const handleExpandProjects = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setAccord(!accord);
+    }
+
+    const handleAddProject = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    const handleMouseEnter = () => {
+        setHovr(true)
+    }
+
+    const handleMouseLeave = () => {
+        setHovr(false)
+    }
 
     const handleMenuClick = () => {
         dispatch(toggleSidebar())
     }
 
     return (
-        <div className='pr-2 flex flex-col gap-4 text-gray-600'>
+        <div className='pr-2 h-full flex flex-col gap-4 text-gray-600' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <div className='flex justify-between items-center'>
                 <div>Ajay</div>
-                <div><IconButton onClick={handleMenuClick}><MenuOutlined /></IconButton></div>
+                <div><IconButton onClick={handleMenuClick}><BsLayoutSidebar size={19} /></IconButton></div>
             </div>
             <div className='flex flex-col'>
                 <div className='w-full h-10'>
                     <div className='hover:bg-gray-100 transition-all duration-500 rounded-md cursor-pointer p-1 active:mr-1 active:ml-1 active:mt-1 flex items-center gap-1'><span className='text-orange-600'><AddCircle /></span> <span className='text-orange-800 font-semibold'>Add Task</span></div>
                 </div>
                 <div className='w-full h-10'>
-                    <div className='hover:bg-gray-100 transition-all duration-500 rounded-md cursor-pointer p-1 active:mr-1 active:ml-1 active:mt-1 flex items-center gap-1'><span className=''><Search /></span> <span className=''>Search</span></div>
+                    <div className='hover:bg-gray-100 transition-all duration-500 rounded-md cursor-pointer p-1 active:mr-1 active:ml-1 active:mt-1 flex items-center gap-1'><span className=''><IoSearchOutline size={19} /></span> <span className=''>Search</span></div>
                 </div>
-                <NavLink to='/inbox' className={({ isActive }) => `rounded-md ${isActive ? 'text-red-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                    <div className='p-1 flex items-center gap-1'><span ><Inbox /></span> Inbox</div>
+                <NavLink to='/inbox' className={({ isActive }) => `rounded-md h-9 flex items-center ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                    {({ isActive }) => (<div className='p-1 flex items-center gap-1'><span >{isActive ? <IoFileTray size={19} /> : <IoFileTrayOutline size={19} />}</span> Inbox</div>)}
                 </NavLink>
-                <NavLink to='/today' className={({ isActive }) => `rounded-md ${isActive ? 'text-red-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                    <div className='p-1 flex items-center gap-1'><span className=''><Today /></span> Today</div>
+                <NavLink to='/today' className={({ isActive }) => `rounded-md h-9 flex items-center ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                    {({ isActive }) => (<div className='p-1 flex items-center gap-1'><span className=''>{isActive ? <IoToday size={19} /> : <IoTodayOutline size={19} />}</span> Today</div>)}
                 </NavLink>
-                <NavLink to='/upcoming' className={({ isActive }) => `rounded-md ${isActive ? 'text-red-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                    <div className='p-1 flex items-center gap-1'><span className=''><HorizontalSplit /></span> Upcoming</div>
+                <NavLink to='/upcoming' className={({ isActive }) => `rounded-md h-9 flex items-center ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                    {({ isActive }) => (<div className='p-1 flex items-center gap-1'><span className=''>{isActive ? <IoCalendarSharp size={19} /> : <IoCalendarOutline size={19} />}</span> Upcoming</div>)}
                 </NavLink>
-                <NavLink to='/filter-labels' className={({ isActive }) => `rounded-md ${isActive ? 'text-red-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                    <div className='p-1 flex items-center gap-1'><span className=''><GridViewOutlined /></span> Filter & Labels</div>
+                <NavLink to='/filter-labels' className={({ isActive }) => `rounded-md h-9 flex items-center ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                    {({ isActive }) => (<div className='p-1 flex items-center gap-1'><span className=''>{isActive ? <IoGrid size={19} /> : <IoGridOutline size={19} />}</span> Filter & Labels</div>)}
                 </NavLink>
 
-
-
-
-                {/* <NavLink to='/' className={({ isActive }) => `${isActive ? 'text-red-500' : 'text-gray-600'}`} >Home</NavLink>
-                <NavLink to='projects' className={({ isActive }) => `${isActive ? 'text-red-500' : 'text-gray-600'}`} >Projects</NavLink>
-                <NavLink to='project/123' className={({ isActive }) => `${isActive ? 'text-red-500' : 'text-gray-600'}`} >Project/123</NavLink>
-                <NavLink to='todos' className={({ isActive }) => `${isActive ? 'text-red-500' : 'text-gray-600'}`} >Todos</NavLink> */}
             </div>
-            <div className='flex-col'>
-                <div className='font-semibold flex justify-between items-center'>
+
+            <div className='flex flex-col'>
+                <NavLink to='/projects' className={({ isActive }) => `rounded-md h-8 ${isActive ? 'bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                    {/* <div className='p-1 flex items-center gap-1'><span className='text-xl' >#</span> Projects</div> */}
+
+                    <div className='p-1 font-semibold flex justify-between' >
+                        <div className=''>My Projects</div>
+                        <span className='flex gap-1 items-center'>
+                            <div className={`hover:bg-gray-200 ${!hovr && 'hidden'} h-5 w-5 flex justify-center items-center rounded-full cursor-pointer transition-all duration-500 `} onClick={handleAddProject}><IoAdd size={19} /></div>
+                            <div className={`hover:bg-gray-200 ${!hovr && 'hidden'} h-5 w-5 flex justify-center items-center rounded-full cursor-pointer transition-all duration-500 ${!accord ? 'rotate-0' : 'rotate-90'}`} onClick={handleExpandProjects}><HiChevronRight size={19} /></div>
+                        </span>
+                    </div>
+                </NavLink>
+                {/* <div className='font-semibold flex justify-between items-center'>
                     <div>My Projects</div>
-                    <div className={`hover:bg-gray-100 rounded-full transition-all duration-500 ${!accord ? 'rotate-0' : 'rotate-90'}`} onClick={() => setAccord(!accord)}><KeyboardArrowRight /></div>
-                </div>
-                <div className={`transition-all duration-500 overflow-clip flex flex-col  ${!accord ? 'max-h-0' : 'max-h-80'}`}>
-                    <NavLink to='/' className={({ isActive }) => `rounded-md ${isActive ? 'text-red-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                        <div className='p-1 flex items-center gap-1'><span className='text-xl' >#</span> Home</div>
+                    <div className={`hover:bg-gray-100 rounded-full cursor-pointer transition-all duration-500 ${!accord ? 'rotate-0' : 'rotate-90'}`} onClick={() => setAccord(!accord)}><KeyboardArrowRight /></div>
+                </div> */}
+                <div className={`transition-all duration-500 overflow-clip flex flex-col ml-2  ${!accord ? 'max-h-0' : 'max-h-80'}`}>
+                    <NavLink to='/' className={({ isActive }) => `rounded-md ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                        <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> Home</div>
                     </NavLink>
-                    <NavLink to='/projects' className={({ isActive }) => `rounded-md ${isActive ? 'text-red-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                    {/* <NavLink to='/projects' className={({ isActive }) => `rounded-md ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                         <div className='p-1 flex items-center gap-1'><span className='text-xl' >#</span> Projects</div>
+                    </NavLink> */}
+                    <NavLink to='/project/123' className={({ isActive }) => `rounded-md ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                        <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> Project/123</div>
                     </NavLink>
-                    <NavLink to='/project/123' className={({ isActive }) => `rounded-md ${isActive ? 'text-red-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                        <div className='p-1 flex items-center gap-1'><span className='text-xl' >#</span> Project/123</div>
-                    </NavLink>
-                    <NavLink to='/todos' className={({ isActive }) => `rounded-md ${isActive ? 'text-red-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                        <div className='p-1 flex items-center gap-1'><span className='text-xl' >#</span> Todos</div>
+                    <NavLink to='/todos' className={({ isActive }) => `rounded-md ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                        <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> Todos</div>
                     </NavLink>
                 </div>
             </div>
+
 
         </div>
     )
