@@ -28,6 +28,11 @@ const Sidebar = () => {
         event.stopPropagation();
     }
 
+    const handleUserMenuClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
     const handleMouseEnter = () => {
         setHovr(true)
     }
@@ -42,8 +47,12 @@ const Sidebar = () => {
 
     return (
         <div className='pr-2 h-full flex flex-col gap-4 text-gray-600' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <div className='flex justify-between items-center'>
-                <div>Ajay</div>
+            <div className='flex justify-between items-center h-9 mt-1'>
+                <div className='flex gap-2 items-center font-semibold mt-1'>
+                    <div className='h-7 w-7 rounded-full bg-cyan-500 flex items-center justify-center text-white text-lg'>A</div>
+                    <div>Ajay</div>
+                    <div className='h-4 w-4 hover:bg-gray-100 rounded-full rotate-90 cursor-pointer flex items-center justify-center' onClick={handleUserMenuClick}><HiChevronRight /></div>
+                </div>
                 <div><IconButton onClick={handleMenuClick}><BsLayoutSidebar size={19} /></IconButton></div>
             </div>
             <div className='flex flex-col'>
