@@ -21,19 +21,21 @@ const SecondaryLayout = () => {
         if (!sidebar) {
             setTimeout(() => {
                 setBorderDelay(true)
-            }, 300);
+            }, 200);
         } else {
-            setBorderDelay(false)
+            setTimeout(() => {
+                setBorderDelay(false)
+            }, 100);
         }
     }, [sidebar])
 
     return (
         <div className='flex h-full w-full bg-white'>
-            <div className={`transition-all duration-500 bg-orange-50/50 overflow-hidden ${borderDelay ? 'border-none' : 'border-none'} ${!sidebar ? 'w-0' : 'w-0 tablet:w-60 tablet:pl-4'} `}>
+            <div className={`transition-all duration-500 bg-orange-50/50 overflow-hidden ${!sidebar ? 'w-0' : 'w-0 tablet:w-60 tablet:pl-4'} `}>
                 <Sidebar />
             </div>
             <div className='transition-all duration-500 pl-2 flex-col'>
-                <div className='h-10 flex items-center'>{!sidebar && <IconButton onClick={handleMenuClick}><BsLayoutSidebar size={19} /></IconButton>} Page Title</div>
+                <div className={`h-10 flex items-center`}><span className={`${borderDelay ? 'visible' : 'hidden'}`}><IconButton onClick={handleMenuClick}><BsLayoutSidebar size={19} /></IconButton></span> </div>
                 <Outlet />
             </div>
         </div>

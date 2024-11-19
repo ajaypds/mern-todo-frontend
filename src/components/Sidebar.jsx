@@ -7,7 +7,7 @@ import { IconButton } from '@mui/material'
 import { HiChevronRight } from "react-icons/hi2";
 import { PiHashThin } from "react-icons/pi";
 import { BsLayoutSidebar } from "react-icons/bs";
-import { IoFileTray, IoFileTrayOutline, IoSearchOutline, IoGrid, IoGridOutline, IoAdd, IoToday, IoTodayOutline, IoCalendarOutline, IoCalendarSharp } from "react-icons/io5";
+import { IoAddCircleSharp, IoFileTray, IoFileTrayOutline, IoSearchOutline, IoGrid, IoGridOutline, IoAdd, IoToday, IoTodayOutline, IoCalendarOutline, IoCalendarSharp } from "react-icons/io5";
 
 
 const Sidebar = () => {
@@ -56,22 +56,22 @@ const Sidebar = () => {
                 <div><IconButton onClick={handleMenuClick}><BsLayoutSidebar size={19} /></IconButton></div>
             </div>
             <div className='flex flex-col'>
-                <div className='w-full h-10'>
-                    <div className='hover:bg-gray-100 transition-all duration-500 rounded-md cursor-pointer p-1 active:mr-1 active:ml-1 active:mt-1 flex items-center gap-1'><span className='text-orange-600'><AddCircle /></span> <span className='text-orange-800 font-semibold'>Add Task</span></div>
+                <div className='w-full h-9'>
+                    <div className='hover:bg-gray-100 h-full transition-all duration-500 rounded-md cursor-pointer p-1 active:mr-1 active:ml-1 active:mt-1 flex items-center gap-1'><span className='text-amber-600'><IoAddCircleSharp size={26} /></span> <span className='text-amber-800 font-semibold'>Add Task</span></div>
                 </div>
-                <div className='w-full h-10'>
-                    <div className='hover:bg-gray-100 transition-all duration-500 rounded-md cursor-pointer p-1 active:mr-1 active:ml-1 active:mt-1 flex items-center gap-1'><span className=''><IoSearchOutline size={19} /></span> <span className=''>Search</span></div>
+                <div className='w-full h-9'>
+                    <div className='hover:bg-gray-100 h-full transition-all duration-500 rounded-md cursor-pointer p-1 active:mr-1 active:ml-1 active:mt-1 flex items-center gap-1'><span className=''><IoSearchOutline size={19} /></span> <span className=''>Search</span></div>
                 </div>
-                <NavLink to='/inbox' className={({ isActive }) => `rounded-md h-9 flex items-center ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                <NavLink to='/inbox' className={({ isActive }) => `rounded-md h-9 flex items-center ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                     {({ isActive }) => (<div className='p-1 flex items-center gap-1'><span >{isActive ? <IoFileTray size={19} /> : <IoFileTrayOutline size={19} />}</span> Inbox</div>)}
                 </NavLink>
-                <NavLink to='/today' className={({ isActive }) => `rounded-md h-9 flex items-center ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                <NavLink to='/today' className={({ isActive }) => `rounded-md h-9 flex items-center ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                     {({ isActive }) => (<div className='p-1 flex items-center gap-1'><span className=''>{isActive ? <IoToday size={19} /> : <IoTodayOutline size={19} />}</span> Today</div>)}
                 </NavLink>
-                <NavLink to='/upcoming' className={({ isActive }) => `rounded-md h-9 flex items-center ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                <NavLink to='/upcoming' className={({ isActive }) => `rounded-md h-9 flex items-center ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                     {({ isActive }) => (<div className='p-1 flex items-center gap-1'><span className=''>{isActive ? <IoCalendarSharp size={19} /> : <IoCalendarOutline size={19} />}</span> Upcoming</div>)}
                 </NavLink>
-                <NavLink to='/filter-labels' className={({ isActive }) => `rounded-md h-9 flex items-center ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                <NavLink to='/filter-labels' className={({ isActive }) => `rounded-md h-9 flex items-center ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                     {({ isActive }) => (<div className='p-1 flex items-center gap-1'><span className=''>{isActive ? <IoGrid size={19} /> : <IoGridOutline size={19} />}</span> Filter & Labels</div>)}
                 </NavLink>
 
@@ -94,16 +94,16 @@ const Sidebar = () => {
                     <div className={`hover:bg-gray-100 rounded-full cursor-pointer transition-all duration-500 ${!accord ? 'rotate-0' : 'rotate-90'}`} onClick={() => setAccord(!accord)}><KeyboardArrowRight /></div>
                 </div> */}
                 <div className={`transition-all duration-500 overflow-clip flex flex-col ml-2  ${!accord ? 'max-h-0' : 'max-h-80'}`}>
-                    <NavLink to='/' className={({ isActive }) => `rounded-md ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                    <NavLink to='/' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                         <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> Home</div>
                     </NavLink>
-                    {/* <NavLink to='/projects' className={({ isActive }) => `rounded-md ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                    {/* <NavLink to='/projects' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                         <div className='p-1 flex items-center gap-1'><span className='text-xl' >#</span> Projects</div>
                     </NavLink> */}
-                    <NavLink to='/project/123' className={({ isActive }) => `rounded-md ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                    <NavLink to='/project/123' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                         <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> Project/123</div>
                     </NavLink>
-                    <NavLink to='/todos' className={({ isActive }) => `rounded-md ${isActive ? 'text-orange-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                    <NavLink to='/todos' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                         <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> Todos</div>
                     </NavLink>
                 </div>
