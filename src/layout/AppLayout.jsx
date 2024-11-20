@@ -6,7 +6,7 @@ import { toggleSidebar } from '../store'
 import { IconButton } from '@mui/material'
 import { BsLayoutSidebar } from "react-icons/bs";
 
-const SecondaryLayout = () => {
+const AppLayout = () => {
 
     const sidebar = useSelector((x) => x.app.sidebar)
     const [borderDelay, setBorderDelay] = useState(true)
@@ -31,15 +31,17 @@ const SecondaryLayout = () => {
 
     return (
         <div className='flex h-full w-full bg-white'>
-            <div className={`transition-all duration-500 bg-orange-50/50 overflow-hidden ${!sidebar ? 'w-0' : 'w-0 tablet:w-60 tablet:pl-4'} `}>
+            <div className={`transition-all duration-500 bg-orange-50/50 overflow-hidden ${!sidebar ? 'w-0' : 'w-0 tablet:w-80 tablet:pl-4'} `}>
                 <Sidebar />
             </div>
-            <div className='transition-all duration-500 pl-2 flex-col'>
-                <div className={`h-10 flex items-center`}><span className={`${borderDelay ? 'visible' : 'hidden'}`}><IconButton onClick={handleMenuClick}><BsLayoutSidebar size={19} /></IconButton></span> </div>
-                <Outlet />
+            <div className='w-full transition-all duration-500 mx-2 h-full flex-col'>
+                <div className='h-10 flex items-center'><span className={`${borderDelay ? 'visible' : 'hidden'}`}><IconButton onClick={handleMenuClick}><BsLayoutSidebar size={19} /></IconButton></span> </div>
+                <div className='h-[calc(100vh-3rem)]'>
+                    <Outlet />
+                </div>
             </div>
         </div>
     )
 }
 
-export default SecondaryLayout
+export default AppLayout

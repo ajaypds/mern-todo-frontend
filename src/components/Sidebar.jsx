@@ -1,8 +1,8 @@
 import { AddCircle } from '@mui/icons-material'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { toggleSidebar } from '../store'
+import { getProjects, toggleSidebar } from '../store'
 import { IconButton } from '@mui/material'
 import { HiChevronRight } from "react-icons/hi2";
 import { PiHashThin } from "react-icons/pi";
@@ -14,8 +14,12 @@ const Sidebar = () => {
 
     const [accord, setAccord] = useState(false)
     const [hovr, setHovr] = useState(false)
+    const projects = useSelector((x) => x.app.projects.data)
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        dispatch(getProjects())
+    }, [])
 
     const handleExpandProjects = (event) => {
         event.preventDefault();
@@ -57,7 +61,7 @@ const Sidebar = () => {
             </div>
             <div className='flex flex-col'>
                 <div className='w-full h-9'>
-                    <div className='hover:bg-gray-100 h-full transition-all duration-500 rounded-md cursor-pointer p-1 active:mr-1 active:ml-1 active:mt-1 flex items-center gap-1'><span className='text-amber-600'><IoAddCircleSharp size={26} /></span> <span className='text-amber-800 font-semibold'>Add Task</span></div>
+                    <div className='hover:bg-gray-100 h-full transition-all duration-500 rounded-md cursor-pointer  active:mr-1 active:ml-1 active:mt-1 flex items-center gap-1'><span className='text-amber-600'><IoAddCircleSharp size={26} /></span> <span className='text-amber-800 font-semibold'>Add Task</span></div>
                 </div>
                 <div className='w-full h-9'>
                     <div className='hover:bg-gray-100 h-full transition-all duration-500 rounded-md cursor-pointer p-1 active:mr-1 active:ml-1 active:mt-1 flex items-center gap-1'><span className=''><IoSearchOutline size={19} /></span> <span className=''>Search</span></div>
@@ -94,18 +98,22 @@ const Sidebar = () => {
                     <div className={`hover:bg-gray-100 rounded-full cursor-pointer transition-all duration-500 ${!accord ? 'rotate-0' : 'rotate-90'}`} onClick={() => setAccord(!accord)}><KeyboardArrowRight /></div>
                 </div> */}
                 <div className={`transition-all duration-500 overflow-clip flex flex-col ml-2  ${!accord ? 'max-h-0' : 'max-h-80'}`}>
-                    <NavLink to='/' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                    {/* <NavLink to='/' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                         <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> Home</div>
-                    </NavLink>
-                    {/* <NavLink to='/projects' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                        <div className='p-1 flex items-center gap-1'><span className='text-xl' >#</span> Projects</div>
                     </NavLink> */}
-                    <NavLink to='/project/123' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                    {projects && projects.map((x) => {
+                        return (
+                            <NavLink key={x._id} to={`/project/${x._id}`} className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                                <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> {x.name}</div>
+                            </NavLink>
+                        )
+                    })}
+                    {/* <NavLink to='/project/123' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                         <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> Project/123</div>
-                    </NavLink>
-                    <NavLink to='/todos' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+                    </NavLink> */}
+                    {/* <NavLink to='/todos' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                         <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> Todos</div>
-                    </NavLink>
+                    </NavLink> */}
                 </div>
             </div>
 

@@ -1,18 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
 import Projects from "../pages/Projects";
 import MainContent from "../pages/MainContent";
-import Layout from "../layout/Layout";
 import Project from "../pages/Project";
 import Inbox from "../pages/Inbox";
 import Today from "../pages/Today";
 import Upcoming from "../pages/Upcoming";
 import FilterLabels from "../pages/FilterLabels";
+import AppLayout from "../layout/AppLayout";
 
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <Layout />,
+        element: <AppLayout />,
         children: [
             {
                 path: '/',
