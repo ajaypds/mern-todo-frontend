@@ -1,8 +1,11 @@
 import React from 'react'
+import PageLayout from '../layout/PageLayout'
 
 const Upcoming = () => {
     return (
-        <div>Upcoming</div>
+        <PageLayout heading='Upcoming'>
+
+        </PageLayout>
     )
 }
 

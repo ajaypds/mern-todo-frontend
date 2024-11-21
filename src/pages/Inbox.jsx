@@ -1,8 +1,11 @@
 import React from 'react'
+import PageLayout from '../layout/PageLayout'
 
 const Inbox = () => {
     return (
-        <div>Inbox</div>
+        <PageLayout heading='Inbox'>
+
+        </PageLayout>
     )
 }
 

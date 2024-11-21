@@ -1,8 +1,11 @@
 import React from 'react'
+import PageLayout from '../layout/PageLayout'
 
 const FilterLabels = () => {
     return (
-        <div>FilterLabels</div>
+        <PageLayout heading='Filter & Labels'>
+
+        </PageLayout>
     )
 }
 

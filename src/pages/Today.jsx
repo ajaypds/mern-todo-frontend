@@ -1,8 +1,11 @@
 import React from 'react'
+import PageLayout from '../layout/PageLayout'
 
 const Today = () => {
     return (
-        <div>Today</div>
+        <PageLayout heading='Today'>
+
+        </PageLayout>
     )
 }
 

@@ -45,7 +45,7 @@ export const getProjects = createAsyncThunk('getProjects', async (thunkAPI) => {
     return await apiRequest.get('/projects');
 });
 
-export const getProject = createAsyncThunk('getTodo', async (id) => {
+export const getProject = createAsyncThunk('getProject', async (id) => {
     return await apiRequest.get(`/projects/${id}`);
 });
 
@@ -102,7 +102,7 @@ export const appSlice = createSlice({
         });
         builder.addMatcher(isAnyOf(getTodo.fulfilled, addTodo.fulfilled, updateTodo.fulfilled), (state, { payload }) => {
             state.todo.loading = false;
-            state.todo.data = payload.data;
+            state.todo.data = payload;
             state.todo.error = ''
         });
         builder.addMatcher(isAnyOf(getTodo.rejected, addTodo.rejected, updateTodo.rejected), (state, { error }) => {
@@ -113,12 +113,13 @@ export const appSlice = createSlice({
         // ------------------------------------------------------------
 
         builder.addMatcher(isAnyOf(getProject.pending, addProject.pending, updateProject.pending), (state) => {
+            state.project.data = '';
             state.project.loading = true;
             state.project.error = ''
         });
         builder.addMatcher(isAnyOf(getProject.fulfilled, addProject.fulfilled, updateProject.fulfilled), (state, { payload }) => {
             state.project.loading = false;
-            state.project.data = payload.data;
+            state.project.data = payload;
             state.project.error = ''
         });
         builder.addMatcher(isAnyOf(getProject.rejected, addProject.rejected, updateProject.rejected), (state, { error }) => {
