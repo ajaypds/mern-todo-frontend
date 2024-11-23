@@ -47,7 +47,7 @@ const Project = () => {
             <div className='flex flex-col gap-1 mt-2' onMouseLeave={handleTaskCheckMouseLeave}>
                 {(project && project?.todos?.length > 0) && project?.todos.map((x, i) => {
                     return (
-                        <div id={x._id} className='border-b min-h-8 flex items-center cursor-pointer'>
+                        <div key={x._id} className='border-b min-h-8 flex items-center cursor-pointer'>
                             <span className='text-gray-400 h-8 w-8 flex items-center rounded-lg'
                                 onClick={(e) => handleCheckClick(e, x._id)}
                                 onMouseOver={() => handleTaskCheckMouseEnter(x._id)}
@@ -59,7 +59,7 @@ const Project = () => {
                     )
                 })}
             </div>
-            <AddTaskInline projetId={project._id} />
+            {id && <AddTaskInline projectId={id} />}
         </PageLayout>
     )
 }

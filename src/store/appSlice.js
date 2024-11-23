@@ -33,8 +33,8 @@ export const getTodo = createAsyncThunk('getTodo', async (id) => {
     return await apiRequest.get(`/todos/${id}`);
 });
 
-export const addTodo = createAsyncThunk('addTodo', async ({ taskname, duedate, parent, parentModel }) => {
-    return await apiRequest.post('/todos', { taskname, duedate, parent, parentModel });
+export const addTodo = createAsyncThunk('addTodo', async ({ taskname, duedate, parentId, parentModel }) => {
+    return await apiRequest.post('/todos', { taskname, duedate, parentId, parentModel });
 });
 
 export const updateTodo = createAsyncThunk('updateTodo', async ({ id, taskname, duedate, parent, parentModel }) => {
