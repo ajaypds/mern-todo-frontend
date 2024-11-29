@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { GoCheckCircle } from "react-icons/go";
 import { PiCircleThin } from "react-icons/pi";
 import { PiDotsSixVerticalBold } from "react-icons/pi";
@@ -34,22 +34,19 @@ const Todo = ({ todo, hoveredCheckId, setHoveredCheckId, checkedTasks, setChecke
     const handleCheckClick = async (e, id) => {
         e.preventDefault();
         e.stopPropagation();
+        var data = {}
         if (checkedTasks.includes(id)) {
-            const data = { id: id, completed: false }
+            data = { id: id, completed: false }
             setCheckedTasks(checkedTasks.filter((x) => x != id))
-            dispatch(toggleTodoComplete(data)).then(() => {
-                dispatch(getProjects())
-            })
-
         } else {
-            const data = { id: id, completed: true }
+            data = { id: id, completed: true }
             setCheckedTasks((x) => {
                 return [...x, id]
             })
-            dispatch(toggleTodoComplete(data)).then(() => {
-                dispatch(getProjects())
-            })
         }
+        dispatch(toggleTodoComplete(data)).then(() => {
+            dispatch(getProjects())
+        })
     }
 
     useEffect(() => {
