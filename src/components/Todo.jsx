@@ -1,11 +1,11 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { GoCheckCircle } from "react-icons/go";
 import { PiCircleThin } from "react-icons/pi";
 import { PiDotsSixVerticalBold } from "react-icons/pi";
 import { useDispatch } from 'react-redux';
-import { toggleTodoComplete } from '../store';
+import { getProjects, toggleTodoComplete } from '../store';
 
 const Todo = ({ todo, hoveredCheckId, setHoveredCheckId, checkedTasks, setCheckedTasks, dragging, dragId, hovered, setHovered }) => {
 
@@ -37,15 +37,28 @@ const Todo = ({ todo, hoveredCheckId, setHoveredCheckId, checkedTasks, setChecke
         if (checkedTasks.includes(id)) {
             const data = { id: id, completed: false }
             setCheckedTasks(checkedTasks.filter((x) => x != id))
-            dispatch(toggleTodoComplete(data))
+            dispatch(toggleTodoComplete(data)).then(() => {
+                dispatch(getProjects())
+            })
+
         } else {
             const data = { id: id, completed: true }
             setCheckedTasks((x) => {
                 return [...x, id]
             })
-            dispatch(toggleTodoComplete(data))
+            dispatch(toggleTodoComplete(data)).then(() => {
+                dispatch(getProjects())
+            })
         }
     }
+
+    useEffect(() => {
+        if (todo.completed) {
+            setCheckedTasks((x) => {
+                return [...x, todo._id]
+            })
+        }
+    }, [])
 
     return (
         <div className={`border-b min-h-9 flex items-center cursor-pointer ${(dragging && dragId === todo.id) && 'rounded-md border bg-white z-10 shadow-md'} `} ref={setNodeRef} style={style}

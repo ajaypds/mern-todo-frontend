@@ -3,19 +3,23 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { getProjects, toggleSidebar } from '../store'
-import { IconButton } from '@mui/material'
+import { IconButton, Popover } from '@mui/material'
 import { HiChevronRight } from "react-icons/hi2";
 import { PiHashThin } from "react-icons/pi";
 import { BsLayoutSidebar } from "react-icons/bs";
+import { PiDotsThreeOutlineThin } from "react-icons/pi";
 import { IoAddCircleSharp, IoFileTray, IoFileTrayOutline, IoSearchOutline, IoGrid, IoGridOutline, IoAdd, IoToday, IoTodayOutline, IoCalendarOutline, IoCalendarSharp } from "react-icons/io5";
 
 
 const Sidebar = () => {
 
     const [accord, setAccord] = useState(false)
-    const [hovr, setHovr] = useState(false)
+    const [hoverSidebar, setHoverSidebar] = useState(false)
+    const [hoverProject, setHoverProject] = useState(null)
+    const [projectAnchor, setProjectAnchor] = useState(null)
     const projects = useSelector((x) => x.app.projects.data)
     const dispatch = useDispatch()
+    const projectMenuOpen = Boolean(projectAnchor)
 
     useEffect(() => {
         dispatch(getProjects())
@@ -37,20 +41,38 @@ const Sidebar = () => {
         e.stopPropagation();
     }
 
-    const handleMouseEnter = () => {
-        setHovr(true)
+    const handleMouseEnterSidebar = () => {
+        setHoverSidebar(true)
     }
 
-    const handleMouseLeave = () => {
-        setHovr(false)
+    const handleMouseLeaveSidebar = () => {
+        setHoverSidebar(false)
+    }
+
+    const handleMouseEnterProject = (id) => {
+        setHoverProject(id)
+    }
+
+    const handleMouseLeaveProject = () => {
+        setHoverProject(null)
     }
 
     const handleMenuClick = () => {
         dispatch(toggleSidebar())
     }
 
+    const handleProjectMenuClick = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setProjectAnchor(e.currentTarget)
+    }
+
+    const handleProjectMenuClose = () => {
+        setProjectAnchor(null)
+    }
+
     return (
-        <div className='pr-2 h-full flex flex-col gap-4 text-gray-600 tracking-wider' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div className='pr-2 h-full flex flex-col gap-4 text-gray-600 tracking-wider' onMouseEnter={handleMouseEnterSidebar} onMouseLeave={handleMouseLeaveSidebar}>
             <div className='flex justify-between items-center h-9 mt-1'>
                 <div className='flex gap-2 items-center font-semibold mt-1'>
                     <div className='h-7 w-7 rounded-full bg-cyan-500 flex items-center justify-center text-white text-lg'>A</div>
@@ -88,42 +110,42 @@ const Sidebar = () => {
                     <div className='p-1 font-semibold flex justify-between' >
                         <div className=''>My Projects</div>
                         <span className='flex gap-1 items-center'>
-                            <div className={`hover:bg-gray-200 ${!hovr && 'hidden'} h-5 w-5 flex justify-center items-center rounded-full cursor-pointer transition-all duration-500 `} onClick={handleAddProject}><IoAdd size={19} /></div>
-                            <div className={`hover:bg-gray-200 ${!hovr && 'hidden'} h-5 w-5 flex justify-center items-center rounded-full cursor-pointer transition-all duration-500 ${!accord ? 'rotate-0' : 'rotate-90'}`} onClick={handleExpandProjects}><HiChevronRight size={19} /></div>
+                            <div className={`hover:bg-gray-200 ${!hoverSidebar && 'hidden'} h-5 w-5 flex justify-center items-center rounded-full cursor-pointer transition-all duration-500 `} onClick={handleAddProject}><IoAdd size={19} /></div>
+                            <div className={`hover:bg-gray-200 ${!hoverSidebar && 'hidden'} h-5 w-5 flex justify-center items-center rounded-full cursor-pointer transition-all duration-500 ${!accord ? 'rotate-0' : 'rotate-90'}`} onClick={handleExpandProjects}><HiChevronRight size={19} /></div>
                         </span>
                     </div>
                 </NavLink>
-                {/* <div className='font-semibold flex justify-between items-center'>
-                    <div>My Projects</div>
-                    <div className={`hover:bg-gray-100 rounded-full cursor-pointer transition-all duration-500 ${!accord ? 'rotate-0' : 'rotate-90'}`} onClick={() => setAccord(!accord)}><KeyboardArrowRight /></div>
-                </div> */}
                 <div className={`transition-all duration-500 overflow-clip flex flex-col ml-1 tracking-wider ${!accord ? 'max-h-0' : 'max-h-80'}`}>
-                    {/* <NavLink to='/' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                        <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> Home</div>
-                    </NavLink> */}
                     {projects && projects.map((x) => {
                         return (
                             <NavLink key={x._id} to={`/project/${x._id}`} className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                                <div className='py-2 px-1 w-full flex items-center gap-1'>
+                                <div className='py-2 px-1 w-full flex items-center gap-1'
+                                    onMouseEnter={() => handleMouseEnterProject(x._id)} onMouseLeave={handleMouseLeaveProject} >
                                     <div className='text-xl mr-1' ><PiHashThin size={19} /></div>
                                     <div className='flex justify-between items-center w-full'>
                                         <div>{x.name}</div>
-                                        <div className='text-[calc(0.70rem)]'>{x.todos?.length > 0 ? x.todos?.length : ''}</div>
+                                        {hoverProject === x._id ?
+                                            <div className='hover:bg-slate-200 p-1 rounded-md' onClick={handleProjectMenuClick}><PiDotsThreeOutlineThin size={14} /></div>
+                                            : <div className='text-[calc(0.70rem)]'>{x.incompleteTasks > 0 ? x.incompleteTasks : ''}</div>}
                                     </div>
                                 </div>
                             </NavLink>
                         )
                     })}
-                    {/* <NavLink to='/project/123' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                        <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> Project/123</div>
-                    </NavLink> */}
-                    {/* <NavLink to='/todos' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                        <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> Todos</div>
-                    </NavLink> */}
                 </div>
             </div>
 
-
+            <Popover className='mr-2 ' open={projectMenuOpen} anchorEl={projectAnchor} onClose={handleProjectMenuClose}
+                anchorOrigin={{
+                    vertical: 'center',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'center',
+                    horizontal: 'left',
+                }}>
+                <div className='w-60 h-80 py-6 px-4'>Project Menu</div>
+            </Popover>
         </div>
     )
 }
