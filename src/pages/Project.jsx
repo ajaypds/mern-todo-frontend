@@ -3,7 +3,7 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSo
 import React, { useEffect, useState } from 'react'
 import Todo from '../components/Todo'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProject, updateTodoIndex, updateTodoOrder } from '../store'
+import { getProject, updateTodoOrder } from '../store'
 import { useParams } from 'react-router-dom'
 import AddTaskInline from '../components/AddTaskInline'
 import PageLayout from '../layout/PageLayout'
