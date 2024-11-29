@@ -1,66 +1,88 @@
+import { closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import React, { useEffect, useState } from 'react'
+import Todo from '../components/Todo'
 import { useDispatch, useSelector } from 'react-redux'
+import { getProject, updateTodoIndex, updateTodoOrder } from '../store'
 import { useParams } from 'react-router-dom'
-import { getProject } from '../store'
-import PageLayout from '../layout/PageLayout'
-import { GoCheckCircle } from "react-icons/go";
-import { PiCircleThin } from "react-icons/pi";
 import AddTaskInline from '../components/AddTaskInline'
-
+import PageLayout from '../layout/PageLayout'
+import Todo2 from '../components/Todo2'
 
 const Project = () => {
     const { id } = useParams()
     const project = useSelector((x) => x.app.project.data)
     const [hoveredCheckId, setHoveredCheckId] = useState()
-
+    const [hovered, setHovered] = useState(null)
+    const [dragId, setDragId] = useState()
     const [checkedTasks, setCheckedTasks] = useState([])
+    const [dragging, setDragging] = useState(false)
     const dispatch = useDispatch()
+    const [todos, setTodos] = useState([])
 
-    const handleTaskCheckMouseEnter = (id) => {
-        setHoveredCheckId(id)
-    }
-    const handleTaskCheckMouseLeave = () => {
-        setHoveredCheckId(null)
-    }
-
-    const handleCheckClick = (e, id) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (checkedTasks.includes(id)) {
-            setCheckedTasks(checkedTasks.filter((x) => x != id))
-        } else {
-            setCheckedTasks((x) => {
-                return [...x, id]
-            })
-        }
-
-    }
     useEffect(() => {
         if (id) {
             dispatch(getProject(id))
         }
     }, [id])
 
+    useEffect(() => {
+        if (project && project.todos?.length > 0) {
+            let list = [...project.todos]
+                .sort((a, b) => a.id - b.id)
+            setTodos(list)
+        } else {
+            setTodos([])
+        }
+    }, [project])
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
+
+    const handleDragStart = (e) => {
+        setDragging(true)
+        setDragId(e.active.id)
+    }
+
+    const handleDragEnd = async (event) => {
+        const { active, over } = event;
+        const order = []
+        if (active.id !== over.id) {
+            setTodos((items) => {
+                const oldIndex = items.findIndex((item) => item.id === active.id);
+                const newIndex = items.findIndex((item) => item.id === over.id);
+                const arr = arrayMove(items, oldIndex, newIndex)
+                arr.forEach((ar) => {
+                    order.push(ar._id)
+                })
+                return arr
+            })
+            // updating order in db
+            dispatch(updateTodoOrder(order))
+        }
+        setDragging(false)
+    }
+
     return (
         <PageLayout heading={project.name}>
-
-            <div className='flex flex-col gap-1 mt-2' onMouseLeave={handleTaskCheckMouseLeave}>
-                {(project && project?.todos?.length > 0) && project?.todos.map((x, i) => {
-                    return (
-                        <div key={x._id} className='border-b min-h-8 flex items-center cursor-pointer'>
-                            <span className='text-gray-400 h-8 w-8 flex items-center rounded-lg'
-                                onClick={(e) => handleCheckClick(e, x._id)}
-                                onMouseOver={() => handleTaskCheckMouseEnter(x._id)}
-                                onMouseOut={handleTaskCheckMouseLeave}>
-                                {checkedTasks.includes(x._id) ? <span className='text-gray-500'><GoCheckCircle size={22} /></span> : hoveredCheckId === x._id ? <GoCheckCircle size={22} /> : <PiCircleThin size={24} />}
-                            </span>
-                            <span className={`${checkedTasks.includes(x._id) ? 'line-through text-gray-400' : ''}`}>{x.taskname}</span>
-                        </div>
-                    )
-                })}
-            </div>
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
+                <SortableContext items={todos.map(i => i.id)} strategy={verticalListSortingStrategy}>
+                    <div className='flex flex-col'>
+                        {todos.map((todo) => {
+                            return (
+                                <Todo key={todo._id} todo={todo} dragging={dragging} dragId={dragId} hoveredCheckId={hoveredCheckId} setHoveredCheckId={setHoveredCheckId}
+                                    hovered={hovered} setHovered={setHovered} checkedTasks={checkedTasks} setCheckedTasks={setCheckedTasks} />
+                            )
+                        })}
+                    </div>
+                </SortableContext>
+            </DndContext>
             {id && <AddTaskInline projectId={id} />}
-        </PageLayout>
+        </PageLayout >
     )
 }
 

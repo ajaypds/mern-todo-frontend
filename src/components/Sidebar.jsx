@@ -50,7 +50,7 @@ const Sidebar = () => {
     }
 
     return (
-        <div className='pr-2 h-full flex flex-col gap-4 text-gray-600' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div className='pr-2 h-full flex flex-col gap-4 text-gray-600 tracking-wider' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <div className='flex justify-between items-center h-9 mt-1'>
                 <div className='flex gap-2 items-center font-semibold mt-1'>
                     <div className='h-7 w-7 rounded-full bg-cyan-500 flex items-center justify-center text-white text-lg'>A</div>
@@ -97,14 +97,20 @@ const Sidebar = () => {
                     <div>My Projects</div>
                     <div className={`hover:bg-gray-100 rounded-full cursor-pointer transition-all duration-500 ${!accord ? 'rotate-0' : 'rotate-90'}`} onClick={() => setAccord(!accord)}><KeyboardArrowRight /></div>
                 </div> */}
-                <div className={`transition-all duration-500 overflow-clip flex flex-col ml-2  ${!accord ? 'max-h-0' : 'max-h-80'}`}>
+                <div className={`transition-all duration-500 overflow-clip flex flex-col ml-1 tracking-wider ${!accord ? 'max-h-0' : 'max-h-80'}`}>
                     {/* <NavLink to='/' className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                         <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> Home</div>
                     </NavLink> */}
                     {projects && projects.map((x) => {
                         return (
                             <NavLink key={x._id} to={`/project/${x._id}`} className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                                <div className='p-1 flex items-center gap-1'><span className='text-xl' ><PiHashThin size={19} /></span> {x.name}</div>
+                                <div className='py-2 px-1 w-full flex items-center gap-1'>
+                                    <div className='text-xl mr-1' ><PiHashThin size={19} /></div>
+                                    <div className='flex justify-between items-center w-full'>
+                                        <div>{x.name}</div>
+                                        <div className='text-[calc(0.70rem)]'>{x.todos?.length > 0 ? x.todos?.length : ''}</div>
+                                    </div>
+                                </div>
                             </NavLink>
                         )
                     })}

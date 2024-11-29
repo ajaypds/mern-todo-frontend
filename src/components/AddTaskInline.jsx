@@ -43,6 +43,10 @@ const AddTaskInline = ({ projectId }) => {
         setShowForm(!showForm)
     }
 
+    const clearForm = () => {
+        setTaskname('')
+    }
+
     const handleSubmit = () => {
         if (!addDisabled && taskname.length > 0) {
             const data = {
@@ -53,8 +57,15 @@ const AddTaskInline = ({ projectId }) => {
             }
             dispatch(addTodo(data)).then(() => {
                 dispatch(getProject(projectId))
-                setShowForm(false)
+                clearForm()
+                // setShowForm(false)
             })
+        }
+    }
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSubmit()
         }
     }
 
@@ -78,7 +89,7 @@ const AddTaskInline = ({ projectId }) => {
             </div>
             <div className={`flex flex-col border rounded-lg ${!showForm && 'hidden'}`}>
                 <div className='border-b pb-2'>
-                    <CustomTextField fullWidth type='text' placeholder='Task name' variant='outlined' value={taskname} onChange={handleTextInput} />
+                    <CustomTextField fullWidth type='text' placeholder='Task name' variant='outlined' value={taskname} onChange={handleTextInput} onKeyDownCapture={handleKeyPress} />
                 </div>
                 <div className='flex justify-end items-center gap-2 p-2'>
                     <div className='min-w-24 px-4 border text-center py-1 rounded-lg font-semibold bg-gray-200 hover:bg-gray-300 cursor-pointer' onClick={toggleForm}>Cancel</div>
