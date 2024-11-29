@@ -40,9 +40,12 @@ export const addTodo = createAsyncThunk('addTodo', async ({ taskname, duedate, p
 export const updateTodo = createAsyncThunk('updateTodo', async ({ id, taskname, duedate, parent, parentModel }) => {
     return await apiRequest.put(`/todos/${id}`, { taskname, duedate, parent, parentModel })
 });
-export const updateTodoIndex = createAsyncThunk('updateTodoIndex', async ({ activeId, activeIndex, overId, overIndex }) => {
-    return await apiRequest.put(`/todos`, { activeId, activeIndex, overId, overIndex })
+export const toggleTodoComplete = createAsyncThunk('toggleTodoComplete', async ({ id, completed }) => {
+    return await apiRequest.put(`/todos/toggleComplete`, { id, completed })
 });
+// export const updateTodoIndex = createAsyncThunk('updateTodoIndex', async ({ activeId, activeIndex, overId, overIndex }) => {
+//     return await apiRequest.put(`/todos`, { activeId, activeIndex, overId, overIndex })
+// });
 export const updateTodoOrder = createAsyncThunk('updateTodoOrder', async (order) => {
     return await apiRequest.put(`/todos/updateOrder`, { order })
 });
@@ -102,16 +105,16 @@ export const appSlice = createSlice({
             state.projects.error = error?.message
         })
         // ------------------------------------------------------------
-        builder.addMatcher(isAnyOf(getTodo.pending, addTodo.pending, updateTodo.pending, updateTodoIndex.pending), (state) => {
+        builder.addMatcher(isAnyOf(getTodo.pending, addTodo.pending, updateTodo.pending, updateTodoOrder.pending, toggleTodoComplete.pending), (state) => {
             state.todo.loading = true;
             state.todo.error = ''
         });
-        builder.addMatcher(isAnyOf(getTodo.fulfilled, addTodo.fulfilled, updateTodo.fulfilled, updateTodoIndex.fulfilled), (state, { payload }) => {
+        builder.addMatcher(isAnyOf(getTodo.fulfilled, addTodo.fulfilled, updateTodo.fulfilled, updateTodoOrder.fulfilled, toggleTodoComplete.fulfilled), (state, { payload }) => {
             state.todo.loading = false;
             state.todo.data = payload;
             state.todo.error = ''
         });
-        builder.addMatcher(isAnyOf(getTodo.rejected, addTodo.rejected, updateTodo.rejected, updateTodoIndex.rejected), (state, { error }) => {
+        builder.addMatcher(isAnyOf(getTodo.rejected, addTodo.rejected, updateTodo.rejected, updateTodoOrder.rejected, toggleTodoComplete.rejected), (state, { error }) => {
             state.todo.loading = false;
             state.todo.data = [];
             state.todo.error = error?.message
