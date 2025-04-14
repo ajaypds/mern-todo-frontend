@@ -103,11 +103,11 @@ const Sidebar = () => {
 
             </div>
 
-            <div className='flex flex-col'>
-                <NavLink to='/projects' className={({ isActive }) => `rounded-md h-8 ${isActive ? 'bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
+            <div className='flex flex-col '>
+                <NavLink to='/projects' className={({ isActive }) => `rounded-md h-9 w-full flex items-center ${isActive ? 'bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
                     {/* <div className='p-1 flex items-center gap-1'><span className='text-xl' >#</span> Projects</div> */}
 
-                    <div className='p-1 font-semibold flex justify-between' >
+                    <div className='py-1 px-2 w-full h-full font-semibold flex items-center justify-between' >
                         <div className=''>My Projects</div>
                         <span className='flex gap-1 items-center'>
                             <div className={`hover:bg-gray-200 ${!hoverSidebar && 'hidden'} h-5 w-5 flex justify-center items-center rounded-full cursor-pointer transition-all duration-500 `} onClick={handleAddProject}><IoAdd size={19} /></div>
@@ -115,17 +115,17 @@ const Sidebar = () => {
                         </span>
                     </div>
                 </NavLink>
-                <div className={`transition-all duration-500 overflow-clip flex flex-col ml-1 tracking-wider ${!accord ? 'max-h-0' : 'max-h-80'}`}>
+                <div className={`transition-all duration-500 overflow-clip flex flex-col ml-1 tracking-wider overflow-y-auto ${!accord ? 'max-h-0' : 'max-h-80'}`}>
                     {projects && projects.map((x) => {
                         return (
                             <NavLink key={x._id} to={`/project/${x._id}`} className={({ isActive }) => `rounded-md ${isActive ? 'text-amber-700 bg-orange-100/80' : 'text-gray-600 hover:bg-gray-100'}`} >
-                                <div className='py-2 px-1 w-full flex items-center gap-1'
+                                <div className=' px-1 w-full min-h-9 flex items-center gap-1'
                                     onMouseEnter={() => handleMouseEnterProject(x._id)} onMouseLeave={handleMouseLeaveProject} >
                                     <div className='text-xl mr-1' ><PiHashThin size={19} /></div>
-                                    <div className='flex justify-between items-center w-full'>
-                                        <div>{x.name}</div>
+                                    <div className='flex justify-between items-center h-full w-full'>
+                                        <div className=''>{x.name}</div>
                                         {hoverProject === x._id ?
-                                            <div className='hover:bg-slate-200 p-1 rounded-md' onClick={handleProjectMenuClick}><PiDotsThreeOutlineThin size={14} /></div>
+                                            <div className='hover:bg-slate-100 border h-5 px-1 rounded-md flex items-center' onClick={handleProjectMenuClick}><PiDotsThreeOutlineThin size={14} /></div>
                                             : <div className='text-[calc(0.70rem)]'>{x.incompleteTasks > 0 ? x.incompleteTasks : ''}</div>}
                                     </div>
                                 </div>

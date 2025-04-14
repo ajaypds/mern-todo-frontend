@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import { useDispatch, useSelector } from 'react-redux'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { toggleSidebar } from '../store'
 import { IconButton } from '@mui/material'
 import { BsLayoutSidebar } from "react-icons/bs";
@@ -9,8 +9,9 @@ import { BsLayoutSidebar } from "react-icons/bs";
 const AppLayout = () => {
 
     const sidebar = useSelector((x) => x.app.sidebar)
+    const project = useSelector((x) => x.app.project.data)
     const [borderDelay, setBorderDelay] = useState(true)
-
+    const location = useLocation()
     const dispatch = useDispatch()
 
     const handleMenuClick = () => {
@@ -35,7 +36,7 @@ const AppLayout = () => {
                 <Sidebar />
             </div>
             <div className='w-full transition-all duration-500 mx-2 h-full flex-col'>
-                <div className='h-10 flex items-center'><span className={`${borderDelay ? 'visible' : 'hidden'}`}><IconButton onClick={handleMenuClick}><BsLayoutSidebar size={19} /></IconButton></span> </div>
+                <div className='h-10 flex items-center'><span className={`${borderDelay ? 'visible' : 'hidden'}`}><IconButton onClick={handleMenuClick}><BsLayoutSidebar size={19} /></IconButton></span> {location?.pathname.includes('/project/') && <span className='text-sm font-semibold text-slate-500 tracking-wide'>{`My Projects / ${project?.name}`}</span>}</div>
                 <div className='h-[calc(100vh-3rem)]'>
                     <Outlet />
                 </div>
